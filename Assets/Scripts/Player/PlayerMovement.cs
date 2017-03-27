@@ -17,7 +17,6 @@ public class PlayerMovement : MonoBehaviour {
 
         while (!controller.isGrounded)
         {
-            Debug.Log("wtf");
             moveDirection.y -= gravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
         }
