@@ -9,15 +9,15 @@ using UnityEngine.SceneManagement;
  */
 public class StateManager : Singleton<StateManager> {
 
-    private States momentaryState;
+    private States _momentaryState;
 
 
     public void SetMomentaryState(States s)
     {
-        momentaryState = s;
+        _momentaryState = s;
 
         //StateSwitch
-        switch (momentaryState)
+        switch (_momentaryState)
         {
             case States.MAIN_MENU:
                 SceneManager.LoadScene("Main");
