@@ -11,6 +11,9 @@ public class SteamerControl : MonoBehaviour
     private Quaternion _startPosition;
     public Vector3 VectorToLerp;
 
+    
+    public GameObject DangerZoneCollider;
+
     public float Speed = 1.0F;
     public float TimeToKeepDoorOpen = 5f;
 
@@ -21,13 +24,13 @@ public class SteamerControl : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Entered");
+        Debug.Log("Player Entered Console");
         _isTriggerable = true;
     }
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log("Trigger Left");
+        Debug.Log("Player Left Console");
         _isTriggerable = false;
     }
 
@@ -41,39 +44,41 @@ public class SteamerControl : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-	    if (_doorOpen && Time.time - _lastTriggered >= TimeToKeepDoorOpen)
+	    if (_doorOpen && Time.time - _lastTriggered >= TimeToKeepDoorOpen) // Door open and time exceded
 	    {
 	        _isTriggered = false;
 	        ReturnDoorPosition();
 	    }
-	    if (_isTriggerable && !_doorOpen && CrossPlatformInputManager.GetButtonDown("Action"))
+	    if (_isTriggerable && !_doorOpen && CrossPlatformInputManager.GetButtonDown("Action")) // Player inside Trigger and pressed E
 	    {
+            Debug.Log("Triggered");
             //Open door
             _isTriggered = true;
 	        _lastTriggered = Time.time;
 
-
-	        //TODO: Add damagecloud
-
-
 	    }
-	    if (_isTriggered)
+	    if (_isTriggered) //Open Door until Open
 	    {
+            Debug.Log("Rotating forth");
             StartTransform.rotation = Quaternion.Slerp(StartTransform.rotation, _endPosition, Time.time * Speed);
 	        if (StartTransform.rotation == _endPosition)
 	        {
 	            _doorOpen = true;
-	        }
+                // Add damagecloud
+                DangerZoneCollider.SetActive(true);
+            }
         }
         
     }
 
     private void ReturnDoorPosition()
     {
+        Debug.Log("Rotating back");
         StartTransform.rotation = Quaternion.Slerp(StartTransform.rotation, _startPosition, Time.time * Speed);
         if (StartTransform.rotation == _startPosition)
         {
             _doorOpen = false;
+            DangerZoneCollider.SetActive(false);
         }
     }
 }
