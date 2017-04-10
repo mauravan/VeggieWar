@@ -6,4 +6,5 @@ public interface IWeapon
 {
     int GetWeaponDamage();
     float GetRange();
+    bool IsThrowable();
 }

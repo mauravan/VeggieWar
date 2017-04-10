@@ -11,10 +11,9 @@ public class PlayerManager : Singleton<PlayerManager> {
     public int Damage = 5;
     public int Range = 2;
 
-
     public IWeapon CurrentWeapon { get; set; }
 
-
+    public GameObject Crosshair;
 
     public int ReturnTotalRange()
     {
@@ -39,9 +38,9 @@ public class PlayerManager : Singleton<PlayerManager> {
         HitPoints -= dmg;
     }
 
-    public void Attack()
+    public void AttackMelee()
     {
-        //TODO: Attack Animation and Hitboxes
+        //TODO: AttackMelee Animation and Hitboxes
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, ReturnTotalRange()))
         {
@@ -52,22 +51,57 @@ public class PlayerManager : Singleton<PlayerManager> {
         }
            
     }
-    
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    private void AttackRange()
+    {
+        //TODO: Attack Range Animation and Hitboxes
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, ReturnTotalRange()))
+        {
+            if (hit.collider.tag == "Enemy")
+            {
+                hit.transform.GetComponent<BaseEnemy>().ApplyDamage(ReturnTotalDamage());
+            }
+        }
+    }
+
+
+
+    // Use this for initialization
+    void Start ()
+	{
+    	Crosshair.SetActive(false);
+        CurrentWeapon = transform.GetComponent<Knife>(); //TODO: Not set statically
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        
 	    if (HitPoints <= 0)
 	    {
 	        //Todo: Kill Player
             //Load Home Screen
 	    }
-	    if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-            Attack();
-	    
+        if (CurrentWeapon != null && CurrentWeapon.IsThrowable())
+        {
+            if (CrossPlatformInputManager.GetButtonDown("Fire2"))
+            {
+                Crosshair.SetActive(true);
+            }
+            if (CrossPlatformInputManager.GetButtonUp("Fire2"))
+            {
+                Crosshair.SetActive(false);
+            }
+            if (Crosshair.activeSelf && CrossPlatformInputManager.GetButtonDown("Fire1"))
+            {
+                Crosshair.SetActive(false);
+                AttackRange();
+            }
+        }
+        else
+        {
+            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                AttackMelee();
+        }
 	}
 }

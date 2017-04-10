@@ -34,7 +34,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     public void Attack()
     {
-        //TODO: Attack Animation and Hitboxes
+        //TODO: AttackMelee Animation and Hitboxes
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, Range))
         {
