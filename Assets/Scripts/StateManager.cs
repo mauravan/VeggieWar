@@ -12,8 +12,14 @@ public class StateManager : Singleton<StateManager> {
     private States _momentaryState;
 
 
+    public States GetMomentaryState()
+    {
+        return _momentaryState;
+    }
+
     public void SetMomentaryState(States s)
     {
+        States _prevState = _momentaryState;
         _momentaryState = s;
 
         //StateSwitch
@@ -26,7 +32,16 @@ public class StateManager : Singleton<StateManager> {
                 SceneManager.LoadScene("LoadMenu");
                 break;
             case States.KITCHEN:
-                SceneManager.LoadScene("Kitchen");
+                //Check if previous was pause or teleport, so that we can load the scene or just unpause
+                if (!(_prevState == States.PAUSE_MENU) && !(_prevState == States.TELEPORT_MENU))
+                {
+                    SceneManager.LoadScene("Kitchen");
+                }
+                else
+                {
+                    //TODO: Close the overlays
+                    Time.timeScale = 1;
+                }
                 break;
             case States.FIGHT:
                 //TODO: Just switch state - no new scene needed
@@ -34,10 +49,11 @@ public class StateManager : Singleton<StateManager> {
                 break;
             case States.PAUSE_MENU:
                 //TODO: Do an overlay
-                //SceneManager.LoadScene("HomeMenu");
+                Time.timeScale = 0;
                 break;
             case States.TELEPORT_MENU:
-                SceneManager.LoadScene("TeleportMenu");
+                //TODO: Open Overlay
+                Time.timeScale = 0;
                 break;
             case States.SHOP_MENU:
                 SceneManager.LoadScene("ShopMenu");
@@ -57,12 +73,7 @@ public class StateManager : Singleton<StateManager> {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Debug.Log(Input.mousePosition);
-        }
-
-
+       
     }
 }
 

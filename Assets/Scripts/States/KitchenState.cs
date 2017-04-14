@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class KitchenState : MonoBehaviour
+public class KitchenState : Singleton<KitchenState>
 {
-
-    private bool _isInOverlay = false;
    
     // Use this for initialization
     void Start () {
@@ -14,18 +12,17 @@ public class KitchenState : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 
-	    if (!_isInOverlay && CrossPlatformInputManager.GetButtonDown("Cancel"))
+	    if (!(StateManager.Instance.GetMomentaryState() == States.PAUSE_MENU) && !(StateManager.Instance.GetMomentaryState() == States.TELEPORT_MENU) && CrossPlatformInputManager.GetButtonDown("Cancel"))
 	    {
-	        //TODO: Overlay Menu
-	        _isInOverlay = true;
-	        Time.timeScale = 0;
+            StateManager.Instance.SetMomentaryState(States.PAUSE_MENU);
 	    }
-	    else if (_isInOverlay && CrossPlatformInputManager.GetButtonDown("Cancel"))
+	    else if (((StateManager.Instance.GetMomentaryState() == States.PAUSE_MENU) || (StateManager.Instance.GetMomentaryState() == States.TELEPORT_MENU)) && CrossPlatformInputManager.GetButtonDown("Cancel"))
 	    {
-	        Time.timeScale = 1;
-	        _isInOverlay = false;
+            StateManager.Instance.SetMomentaryState(States.KITCHEN);
 	    }
 	   
 		
 	}
+
+   
 }
