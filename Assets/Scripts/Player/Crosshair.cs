@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Kann gelösch weden
 public class Crosshair : MonoBehaviour {
 
     private Rect _position;
