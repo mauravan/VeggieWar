@@ -24,13 +24,11 @@ public class SteamerControl : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player Entered Console");
         _isTriggerable = true;
     }
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log("Player Left Console");
         _isTriggerable = false;
     }
 
@@ -51,7 +49,6 @@ public class SteamerControl : MonoBehaviour
 	    }
 	    if (_isTriggerable && !_doorOpen && CrossPlatformInputManager.GetButtonDown("Action")) // Player inside Trigger and pressed E
 	    {
-            Debug.Log("Triggered");
             //Open door
             _isTriggered = true;
 	        _lastTriggered = Time.time;
@@ -59,7 +56,6 @@ public class SteamerControl : MonoBehaviour
 	    }
 	    if (_isTriggered) //Open Door until Open
 	    {
-            Debug.Log("Rotating forth");
             StartTransform.rotation = Quaternion.Slerp(StartTransform.rotation, _endPosition, Time.time * Speed);
 	        if (StartTransform.rotation == _endPosition)
 	        {
@@ -73,7 +69,6 @@ public class SteamerControl : MonoBehaviour
 
     private void ReturnDoorPosition()
     {
-        Debug.Log("Rotating back");
         StartTransform.rotation = Quaternion.Slerp(StartTransform.rotation, _startPosition, Time.time * Speed);
         if (StartTransform.rotation == _startPosition)
         {
