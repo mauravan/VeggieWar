@@ -38,6 +38,7 @@ public class OilPotControl : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        DangerZoneCollider.SetActive(false);
         _doorOpen = false;
         _endPosition = StartTransform.rotation * Quaternion.Euler(VectorToLerp);
         _startPosition = StartTransform.rotation;
