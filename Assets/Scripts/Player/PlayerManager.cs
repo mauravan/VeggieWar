@@ -45,6 +45,7 @@ public class PlayerManager : Singleton<PlayerManager> {
         HitPoints -= dmg;
         Debug.Log(HitPoints);
 
+        //TODO: Regain Life?
         if (HitPoints >= limits[0])
         {
             _hitbars[0].localScale = new Vector3(_hitbars[0].localScale.x * 0.99f, _hitbars[0].localScale.y * 0.99f, 1);
