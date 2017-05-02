@@ -17,6 +17,8 @@ public class PlayerManager : Singleton<PlayerManager> {
     public GameObject Crosshair;
     public GameObject Hitbar;
 
+    private Animator _attackAnimator;
+
     //Used for hitbar calculations
     private Transform[] _hitbars;
     double[] limits;
@@ -81,6 +83,7 @@ public class PlayerManager : Singleton<PlayerManager> {
     public void AttackMelee()
     {
         //TODO: AttackMelee Animation and Hitboxes
+        _attackAnimator.SetTrigger("Hit_Short");
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, ReturnTotalRange()))
         {
@@ -95,6 +98,7 @@ public class PlayerManager : Singleton<PlayerManager> {
     private void AttackRange()
     {
         //TODO: Attack Range Animation and Hitboxes
+        _attackAnimator.SetTrigger("Throw");
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, ReturnTotalRange()))
         {
@@ -109,8 +113,10 @@ public class PlayerManager : Singleton<PlayerManager> {
 
     // Use this for initialization
     void Start ()
-	{
-    	Crosshair.SetActive(false);
+    {
+        _attackAnimator = transform.GetComponentInChildren<Animator>();
+
+        Crosshair.SetActive(false);
         _maxHitpoints = HitPoints;
         CurrentWeapon = transform.GetComponent<Knife>(); //TODO: Not set statically
         _hitbars = new Transform[] {    Hitbar.transform.FindChild("Hitbar"),
@@ -129,27 +135,33 @@ public class PlayerManager : Singleton<PlayerManager> {
 	// Update is called once per frame
 	void Update () {
 
-        
+        //TODO: Check if currently attacking
         if (CurrentWeapon != null && CurrentWeapon.IsThrowable())
         {
-            if (CrossPlatformInputManager.GetButtonDown("Fire2"))
+            if (CrossPlatformInputManager.GetButton("Fire2"))
             {
                 Crosshair.SetActive(true);
+                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                {
+                    Debug.Log("Range");
+                    AttackRange();
+                }
             }
-            if (CrossPlatformInputManager.GetButtonUp("Fire2"))
+            else
             {
                 Crosshair.SetActive(false);
+                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                {
+                    Debug.Log("Melee");
+                    AttackMelee();
+                }
             }
-            if (Crosshair.activeSelf && CrossPlatformInputManager.GetButtonDown("Fire1"))
-            {
-                Crosshair.SetActive(false);
-                AttackRange();
-            }
+            
         }
         else
         {
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-                AttackMelee();
+                AttackMelee(); Debug.Log("Melee");
         }
 	}
 }

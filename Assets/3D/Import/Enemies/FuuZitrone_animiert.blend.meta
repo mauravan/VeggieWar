@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 2024576b53e8b3f4e869ce56bd5c1b79
 timeCreated: 1493713644
+=======
+guid: c0441503028e66d4599969f54888fd57
+timeCreated: 1493713112
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -16,7 +21,11 @@ ModelImporter:
     400006: //RootNode
     400008: Sphere
     4300000: Sphere
+<<<<<<< HEAD
     7400000: Walk
+=======
+    7400000: Default Take
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
     7400002: ArmatureAction
     9500000: //RootNode
     13700000: Sphere
@@ -40,6 +49,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Walk
@@ -79,6 +89,9 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+    clipAnimations: []
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
     isReadable: 1
   meshes:
     lODScreenPercentages: []

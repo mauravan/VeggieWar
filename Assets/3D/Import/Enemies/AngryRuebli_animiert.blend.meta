@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 8b04fb33ee4f9b041a0585ec0a270885
 timeCreated: 1493713646
+=======
+guid: 43c2e444f05e3a6408356b8bb6e4193d
+timeCreated: 1493713109
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -20,7 +25,11 @@ ModelImporter:
     400010: Bone_002
     400012: Bone_003
     4300000: AngryRuebli
+<<<<<<< HEAD
     7400000: Walk
+=======
+    7400000: Default Take
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
     7400002: ArmatureAction
     9500000: //RootNode
     13700000: AngryRuebli
@@ -44,6 +53,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Walk
@@ -87,6 +97,9 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+    clipAnimations: []
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
     isReadable: 1
   meshes:
     lODScreenPercentages: []

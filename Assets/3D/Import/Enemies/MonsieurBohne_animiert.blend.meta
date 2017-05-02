@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 40234c019eb95914b9430031ebdab3be
 timeCreated: 1493713645
+=======
+guid: 4b3f4fd9d4fc8624ca152771d2b72321
+timeCreated: 1493713110
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -22,7 +27,11 @@ ModelImporter:
     400012: Circle
     400014: //RootNode
     4300000: Circle
+<<<<<<< HEAD
     7400000: Walk
+=======
+    7400000: Default Take
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
     7400002: ArmatureAction
     9500000: //RootNode
     13700000: Circle
@@ -46,6 +55,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Walk
@@ -91,6 +101,9 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+=======
+    clipAnimations: []
+>>>>>>> 0bf23905fe86232c979a59e725fc8bd4e33f8c25
     isReadable: 1
   meshes:
     lODScreenPercentages: []
