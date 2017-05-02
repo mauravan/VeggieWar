@@ -35,6 +35,7 @@ public class SteamerControl : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        DangerZoneCollider.SetActive(false);
         _endPosition = StartTransform.rotation * Quaternion.Euler(VectorToLerp);
         _startPosition = StartTransform.rotation;
         _lastTriggered = Time.time;
@@ -62,7 +63,7 @@ public class SteamerControl : MonoBehaviour
 	            _doorOpen = true;
                 // Add damagecloud
                 DangerZoneCollider.SetActive(true);
-            }
+	        }
         }
         
     }
