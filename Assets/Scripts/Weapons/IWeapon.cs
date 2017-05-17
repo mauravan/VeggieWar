@@ -7,4 +7,6 @@ public interface IWeapon
     int GetWeaponDamage();
     float GetRange();
     bool IsThrowable();
+
+    IEnumerator Attack(bool rangeAttack);
 }

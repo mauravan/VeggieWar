@@ -17,7 +17,11 @@ public class PlayerManager : Singleton<PlayerManager> {
     public GameObject Crosshair;
     public GameObject Hitbar;
 
-    private Animator _attackAnimator;
+    //Used for animation
+    private bool isAttacking;
+    public float attackTime;
+    private float attackTimeCounter;
+
 
     //Used for hitbar calculations
     private Transform[] _hitbars;
@@ -80,33 +84,15 @@ public class PlayerManager : Singleton<PlayerManager> {
         }
     }
 
+
     public void AttackMelee()
     {
-        //TODO: AttackMelee Animation and Hitboxes
-        _attackAnimator.SetTrigger("Hit_Short");
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, ReturnTotalRange()))
-        {
-            if (hit.collider.tag == "Enemy")
-            {
-                hit.transform.GetComponent<BaseEnemy>().ApplyDamage(ReturnTotalDamage());
-            }
-        }
-           
+        StartCoroutine(CurrentWeapon.Attack(false));
     }
 
     private void AttackRange()
     {
-        //TODO: Attack Range Animation and Hitboxes
-        _attackAnimator.SetTrigger("Throw");
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, ReturnTotalRange()))
-        {
-            if (hit.collider.tag == "Enemy")
-            {
-                hit.transform.GetComponent<BaseEnemy>().ApplyDamage(ReturnTotalDamage());
-            }
-        }
+        StartCoroutine( CurrentWeapon.Attack(true) );
     }
 
 
@@ -114,11 +100,10 @@ public class PlayerManager : Singleton<PlayerManager> {
     // Use this for initialization
     void Start ()
     {
-        _attackAnimator = transform.GetComponentInChildren<Animator>();
-
         Crosshair.SetActive(false);
         _maxHitpoints = HitPoints;
-        CurrentWeapon = transform.GetComponent<Knife>(); //TODO: Not set statically
+        CurrentWeapon = transform.GetComponentInChildren<BaseWeapon>(); //TODO: Not set statically
+        Debug.Log(CurrentWeapon.ToString());
         _hitbars = new Transform[] {    Hitbar.transform.FindChild("Hitbar"),
                                         Hitbar.transform.FindChild("Hitbar_1"),
                                         Hitbar.transform.FindChild("Hitbar_2"),
@@ -143,7 +128,6 @@ public class PlayerManager : Singleton<PlayerManager> {
                 Crosshair.SetActive(true);
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))
                 {
-                    Debug.Log("Range");
                     AttackRange();
                 }
             }
@@ -152,7 +136,7 @@ public class PlayerManager : Singleton<PlayerManager> {
                 Crosshair.SetActive(false);
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))
                 {
-                    Debug.Log("Melee");
+                    
                     AttackMelee();
                 }
             }
@@ -161,7 +145,9 @@ public class PlayerManager : Singleton<PlayerManager> {
         else
         {
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-                AttackMelee(); Debug.Log("Melee");
+            {
+                AttackMelee();
+            }
         }
 	}
 }

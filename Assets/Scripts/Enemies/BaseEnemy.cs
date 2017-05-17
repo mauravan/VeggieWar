@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BaseEnemy : MonoBehaviour, IEnemy
 {
@@ -9,13 +10,18 @@ public class BaseEnemy : MonoBehaviour, IEnemy
     public int Damage=10;
     public float Range = 2.0f;
 
+
+    NavMeshAgent agent;
+    public Transform target;
+
 	// Use this for initialization
 	void Start () {
-		
+        agent = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        agent.SetDestination(target.position);
 	    if (HitPoints <= 0)
 	    {
 	        Destroy(gameObject);
