@@ -14,8 +14,12 @@ public class BaseEnemy : MonoBehaviour, IEnemy
     NavMeshAgent agent;
     public Transform target;
 
-	// Use this for initialization
-	void Start () {
+    void OnTriggerEnter(Collider other)
+    {
+    }
+
+    // Use this for initialization
+    void Start () {
         agent = GetComponent<NavMeshAgent>();
 	}
 	
@@ -33,9 +37,16 @@ public class BaseEnemy : MonoBehaviour, IEnemy
         return Damage;
     }
 
-    public void ApplyDamage(int dmg)
+    //Returns if dead or not
+    public bool ApplyDamage(int dmg)
     {
+        if (HitPoints - dmg <= 0)
+        {
+            HitPoints -= dmg;
+            return true;
+        }
         HitPoints -= dmg;
+        return false;
     }
 
     public void Attack()

@@ -29,10 +29,10 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
 
     void OnTriggerEnter(Collider other)
     {
-        if ((_attackAnimator != null) &&  (other.tag == "Enemy") && (!_attackAnimator.GetCurrentAnimatorStateInfo(0).IsName("Nothing")) && (_hitting))
+        if (other.tag == "Enemy" && _hitting)
         {
-            other.transform.GetComponent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
-            Debug.Log(other.transform.GetComponent<BaseEnemy>().HitPoints);
+            other.transform.GetComponentInParent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
+            Debug.Log(other.transform.GetComponentInParent<BaseEnemy>().HitPoints);
             _hitting = false;
         }
     }
@@ -75,7 +75,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
             {
-                Debug.Log(hit.collider.name);
                 float targetDistance = Vector3.Distance(weaponClone.transform.position, hit.point);
                 float projectile_Velocity = targetDistance / (Mathf.Sin(2 * firingAngle * Mathf.Deg2Rad) / speed);
 
@@ -100,8 +99,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
 
                 if (hit.collider.tag == "Enemy")
                 {
-                    hit.collider.transform.GetComponent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
-                    Debug.Log(hit.collider.transform.GetComponent<BaseEnemy>().HitPoints);
+                    hit.collider.transform.GetComponentInParent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
                     Destroy(weaponClone);
                 }
             }

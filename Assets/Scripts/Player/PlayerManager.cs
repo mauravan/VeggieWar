@@ -49,7 +49,6 @@ public class PlayerManager : Singleton<PlayerManager> {
     public void ApplyDamage(int dmg)
     {
         HitPoints -= dmg;
-        Debug.Log(HitPoints);
 
         //TODO: Regain Life?
         if (HitPoints >= limits[0])
@@ -79,8 +78,7 @@ public class PlayerManager : Singleton<PlayerManager> {
         if (HitPoints <= limits[4]) //Death
         {
             _hitbars[4].localScale = new Vector3(0, 0, 0);
-            //Todo: Kill Player
-            //Load Home Screen
+            StateManager.Instance.SetMomentaryState(States.STORY2);
         }
     }
 
@@ -102,8 +100,7 @@ public class PlayerManager : Singleton<PlayerManager> {
     {
         Crosshair.SetActive(false);
         _maxHitpoints = HitPoints;
-        CurrentWeapon = transform.GetComponentInChildren<BaseWeapon>(); //TODO: Not set statically
-        Debug.Log(CurrentWeapon.ToString());
+        CurrentWeapon = transform.GetComponentInChildren<BaseWeapon>();
         _hitbars = new Transform[] {    Hitbar.transform.FindChild("Hitbar"),
                                         Hitbar.transform.FindChild("Hitbar_1"),
                                         Hitbar.transform.FindChild("Hitbar_2"),

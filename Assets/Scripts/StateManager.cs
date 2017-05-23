@@ -26,10 +26,10 @@ public class StateManager : Singleton<StateManager> {
         switch (_momentaryState)
         {
             case States.MAIN_MENU:
-                SceneManager.LoadScene("Main");
+                SceneManager.LoadScene("MainMenu_VeggieWar");
                 break;
-            case States.LOAD_MENU:
-                SceneManager.LoadScene("LoadMenu");
+            case States.STORY1:
+                SceneManager.LoadScene("Story1");
                 break;
             case States.KITCHEN:
                 //Check if previous was pause or teleport, so that we can load the scene or just unpause
@@ -43,10 +43,6 @@ public class StateManager : Singleton<StateManager> {
                     Time.timeScale = 1;
                 }
                 break;
-            case States.FIGHT:
-                //TODO: Just switch state - no new scene needed
-                //SceneManager.LoadScene("HomeMenu");
-                break;
             case States.PAUSE_MENU:
                 //TODO: Do an overlay
                 Time.timeScale = 0;
@@ -55,12 +51,10 @@ public class StateManager : Singleton<StateManager> {
                 //TODO: Open Overlay
                 Time.timeScale = 0;
                 break;
-            case States.SHOP_MENU:
-                SceneManager.LoadScene("ShopMenu");
+            case States.STORY2:
+                SceneManager.LoadScene("Story2");
                 break;
-            case States.HOME_MENU:
-                SceneManager.LoadScene("HomeMenu");
-                break;
+         
             default:
                 break;
         }
@@ -81,12 +75,10 @@ public class StateManager : Singleton<StateManager> {
 public enum States
 {
     MAIN_MENU,
-    LOAD_MENU,
+    STORY1,
+    STORY2,
     KITCHEN,
-    FIGHT,
     PAUSE_MENU,
     TELEPORT_MENU,
-    SHOP_MENU,
-    HOME_MENU
-
+    FIGHT,
 }
