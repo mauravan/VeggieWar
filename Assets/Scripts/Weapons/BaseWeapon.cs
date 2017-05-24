@@ -49,12 +49,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
         _attackAnimator = transform.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public bool IsThrowable()
     {
         return _IsThrowable;
@@ -111,6 +105,4 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
             _hitting = true;
         }
     }
-
-    
 }

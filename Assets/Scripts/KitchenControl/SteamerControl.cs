@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
+[RequireComponent(typeof(AudioSource))]
 public class SteamerControl : MonoBehaviour
 {
     public Transform StartTransform;
@@ -22,6 +23,10 @@ public class SteamerControl : MonoBehaviour
     private bool _doorOpen = false; // Keeps track of the door pos
     private float _lastTriggered; //Time since last triggered
 
+	public AudioClip soundAmbient;
+	public AudioClip soundActive;
+	private AudioSource audio;
+
     void OnTriggerEnter(Collider other)
     {
         _isTriggerable = true;
@@ -39,6 +44,7 @@ public class SteamerControl : MonoBehaviour
         _endPosition = StartTransform.rotation * Quaternion.Euler(VectorToLerp);
         _startPosition = StartTransform.rotation;
         _lastTriggered = Time.time;
+		InitSound ();
     }
 	
 	// Update is called once per frame
@@ -53,7 +59,7 @@ public class SteamerControl : MonoBehaviour
             //Open door
             _isTriggered = true;
 	        _lastTriggered = Time.time;
-
+			PlayActiveSound();
 	    }
 	    if (_isTriggered) //Open Door until Open
 	    {
@@ -75,6 +81,24 @@ public class SteamerControl : MonoBehaviour
         {
             _doorOpen = false;
             DangerZoneCollider.SetActive(false);
+			PlayAmbientSound ();
         }
     }
+
+	private void InitSound(){
+		audio = GetComponent<AudioSource>();
+		audio.volume = AudioControl.soundVolume;
+	}
+	private void PlayActiveSound(){
+		audio.Stop ();
+		audio.clip = soundActive;
+		audio.Play();
+	}
+	private void PlayAmbientSound(){
+		audio.Stop ();
+		audio.clip = soundAmbient;
+		audio.Play();
+	}
+
+
 }

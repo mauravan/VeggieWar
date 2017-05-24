@@ -22,11 +22,16 @@ public class PlayerManager : Singleton<PlayerManager> {
     public float attackTime;
     private float attackTimeCounter;
 
-
     //Used for hitbar calculations
     private Transform[] _hitbars;
     double[] limits;
     public float PercentageToSmallerHitbar = 0.99f;
+
+	// Attack Audio
+	public AudioClip soundThrow;
+	public AudioClip soundAttack;
+	private AudioSource audio;
+
 
     public int ReturnTotalRange()
     {
@@ -85,11 +90,13 @@ public class PlayerManager : Singleton<PlayerManager> {
 
     public void AttackMelee()
     {
+		PlayAttackSound ();
         StartCoroutine(CurrentWeapon.Attack(false));
     }
 
     private void AttackRange()
     {
+		PlayThrowSound ();
         StartCoroutine( CurrentWeapon.Attack(true) );
     }
 
@@ -112,6 +119,7 @@ public class PlayerManager : Singleton<PlayerManager> {
                                             _maxHitpoints * 0.4,
                                             _maxHitpoints * 0.2,
                                             _maxHitpoints * 0.0 };
+		InitSounds ();
     }
 	
 	// Update is called once per frame
@@ -146,5 +154,18 @@ public class PlayerManager : Singleton<PlayerManager> {
                 AttackMelee();
             }
         }
+	}
+		
+	private void InitSounds(){
+		audio = GetComponent<AudioSource>();
+		audio.volume = AudioControl.soundVolume  * 0.4f;
+	}
+	private void PlayThrowSound(){
+		audio.clip = soundThrow;
+		audio.Play();
+	}
+	private void PlayAttackSound(){
+		audio.clip = soundAttack;
+		audio.Play();
 	}
 }
