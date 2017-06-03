@@ -12,10 +12,12 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
     public float Range = 2.0f;
 
     public bool _IsThrowable = true;
-
     private bool _hitting = false;
-
     private Animator _attackAnimator;
+
+	public AudioClip a_MeleeHit;
+	public AudioClip a_RangeHit;
+	AudioSource audioSource;
 
     public float GetRange()
     {
@@ -31,6 +33,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
     {
         if (other.tag == "Enemy" && _hitting)
         {
+			PlayMeleeHitSound ();
             other.transform.GetComponentInParent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
             Debug.Log(other.transform.GetComponentInParent<BaseEnemy>().HitPoints);
             _hitting = false;
@@ -47,6 +50,8 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
     void Start()
     {
         _attackAnimator = transform.GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource>();
+		audioSource.volume = AudioControl.soundVolume / 2;
     }
 
     public bool IsThrowable()
@@ -94,6 +99,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
                 if (hit.collider.tag == "Enemy")
                 {
                     hit.collider.transform.GetComponentInParent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
+					PlayRangeHitSound ();
                     Destroy(weaponClone);
                 }
             }
@@ -105,4 +111,13 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
             _hitting = true;
         }
     }
+
+	private void PlayMeleeHitSound(){
+		audioSource.clip = a_MeleeHit;
+		audioSource.Play ();
+	}
+	private void PlayRangeHitSound(){
+		audioSource.clip = a_RangeHit;
+		audioSource.Play ();
+	}
 }
