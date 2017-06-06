@@ -10,6 +10,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
 
     public int Damage = 10;
     public float Range = 2.0f;
+	private const int MELEEBONUS = 3;
 
     public bool _IsThrowable = true;
     private bool _hitting = false;
@@ -34,7 +35,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
         if (other.tag == "Enemy" && _hitting)
         {
 			PlayMeleeHitSound ();
-            other.transform.GetComponentInParent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage());
+			other.transform.GetComponentInParent<BaseEnemy>().ApplyDamage(PlayerManager.Instance.ReturnTotalDamage() * MELEEBONUS);
             Debug.Log(other.transform.GetComponentInParent<BaseEnemy>().HitPoints);
             _hitting = false;
         }
