@@ -54,6 +54,7 @@ public class PlayerManager : Singleton<PlayerManager> {
     public void ApplyDamage(int dmg)
     {
         HitPoints -= dmg;
+        Debug.Log(HitPoints);
 
         //TODO: Regain Life?
         if (HitPoints >= limits[0])
