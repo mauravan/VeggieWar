@@ -58,7 +58,7 @@ public class PlayerManager : Singleton<PlayerManager> {
         //TODO: Regain Life?
         if (HitPoints >= limits[0])
         {
-            _hitbars[0].localScale = new Vector3(_hitbars[0].localScale.x * 0.99f, _hitbars[0].localScale.y * 0.99f, 1);
+            _hitbars[0].localScale = new Vector3(_hitbars[0].localScale.x * PercentageToSmallerHitbar, _hitbars[0].localScale.y * PercentageToSmallerHitbar, 1);
         }
         if (HitPoints <= limits[0] && HitPoints >= limits[1])
         {
@@ -114,6 +114,11 @@ public class PlayerManager : Singleton<PlayerManager> {
                                         Hitbar.transform.FindChild("Hitbar_3"),
                                         Hitbar.transform.FindChild("Hitbar_4")  };
 
+        for (int i = 0; i < _hitbars.Length; i++)
+        {
+            _hitbars[i].localScale = new Vector3(1, 1, 1);
+        }
+       
         limits = new double[] {             _maxHitpoints * 0.8,
                                             _maxHitpoints * 0.6,
                                             _maxHitpoints * 0.4,
