@@ -20,6 +20,8 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
 	public AudioClip a_RangeHit;
 	AudioSource audioSource;
 
+    public LayerMask throwDetectionMask;
+
     public float GetRange()
     {
         return Range;
@@ -71,9 +73,12 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
 
             GameObject weaponClone = Instantiate(weaponPerfab, weaponSpawn.position, weaponSpawn.rotation) as GameObject;
 
+            Debug.Log("Pre: " + weaponClone.transform.eulerAngles);
+
             //Shooting
+            //TODO: Fix Rotation mess
             RaycastHit hit;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit))
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, throwDetectionMask))
             {
                 float targetDistance = Vector3.Distance(weaponClone.transform.position, hit.point);
                 float projectile_Velocity = targetDistance / (Mathf.Sin(2 * firingAngle * Mathf.Deg2Rad) / speed);
@@ -82,15 +87,19 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
                 float Vy = Mathf.Sqrt(projectile_Velocity) * Mathf.Sin(firingAngle * Mathf.Deg2Rad);
 
                 float flightDuration = targetDistance / Vx;
-                weaponClone.transform.rotation = Quaternion.LookRotation(hit.point - weaponClone.transform.position);
+                weaponClone.transform.rotation = Quaternion.LookRotation(hit.point - weaponClone.transform.position) ;
 
-                
+                weaponClone.transform.Rotate(new Vector3(90,0,0));
+
+                Debug.Log("Post: " + weaponClone.transform.eulerAngles);
+
 
                 float elapse_time = 0;
 
                 while (elapse_time < flightDuration)
                 {
-                    weaponClone.transform.Translate(0, (Vy - (speed * elapse_time)) * Time.deltaTime, Vx * Time.deltaTime);
+                   // weaponClone.transform.Translate(0, (Vy - (speed * elapse_time)) * Time.deltaTime, Vx * Time.deltaTime);
+                    weaponClone.transform.Translate(0, (Vx * Time.deltaTime), 0);
 
                     elapse_time += Time.deltaTime;
 
