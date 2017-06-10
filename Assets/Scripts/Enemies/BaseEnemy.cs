@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,11 +12,11 @@ public class BaseEnemy : MonoBehaviour, IEnemy
     public int Damage=10;
     public float Range = 5.0f;
 
-    public float timeBetweenAttacks = 5f;
+    public float timeBetweenAttacks = 1f;
     private float lastAttacked;
     public float rotationSpeed = 5f;
 
-    private System.Random rnd = new System.Random();
+
 
 
     //Userd for AI
@@ -45,6 +46,9 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     // Use this for initialization
     void Start () {
+        points = GameObject.FindGameObjectsWithTag("PatrolPoint").Select(go => go.transform).ToArray();
+        target = GameObject.FindGameObjectsWithTag("Player")[0].transform;
+
         agent = GetComponent<NavMeshAgent>();
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = AudioControl.soundVolume;
@@ -52,7 +56,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
         GotoNextPoint();
         enemyInSight = false;
         closeForAttack = false;
-        destPoint = rnd.Next(0, points.Length);
+        destPoint = new System.Random().Next(0, points.Length);
     }
 
     private void RotateTowards(Transform target)
@@ -96,7 +100,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
         // Choose the next point in the array as the destination,
         // cycling to the start if necessary.
-        destPoint = rnd.Next(0, points.Length);
+        destPoint = new System.Random().Next(0, points.Length);
     }
 
 
