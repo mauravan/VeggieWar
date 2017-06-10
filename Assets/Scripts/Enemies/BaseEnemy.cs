@@ -13,6 +13,9 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     public float timeBetweenAttacks = 5f;
     private float lastAttacked;
+    public float rotationSpeed = 5f;
+
+    private System.Random rnd = new System.Random();
 
 
     //Userd for AI
@@ -49,7 +52,14 @@ public class BaseEnemy : MonoBehaviour, IEnemy
         GotoNextPoint();
         enemyInSight = false;
         closeForAttack = false;
+        destPoint = rnd.Next(0, points.Length);
+    }
 
+    private void RotateTowards(Transform target)
+    {
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));    // flattens the vector3
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
 
@@ -86,7 +96,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
         // Choose the next point in the array as the destination,
         // cycling to the start if necessary.
-        destPoint = (destPoint + 1) % points.Length;
+        destPoint = rnd.Next(0, points.Length);
     }
 
 
@@ -94,6 +104,9 @@ public class BaseEnemy : MonoBehaviour, IEnemy
     // Update is called once per frame
     void Update () {
         lastAttacked -= Time.deltaTime;
+        CheckIfCloseForAttack();
+        CheckIfEnemyInSight();
+
 
         switch (state)
         {
@@ -102,7 +115,6 @@ public class BaseEnemy : MonoBehaviour, IEnemy
                 break;
             case EnemyStates.WalkingToPlayer:
                 WalkingToPlayer();
-                
                 break;
             case EnemyStates.Attacking:
                 Attacking();
@@ -112,8 +124,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
         }
 
 
-        CheckIfCloseForAttack();
-        CheckIfEnemyInSight();
+        
         CheckIdleSound();
 	    if (HitPoints <= 0)
 	    {
@@ -123,6 +134,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     private void Attacking()
     {
+        RotateTowards(target);
         if (closeForAttack && enemyInSight)
         {
             Attack();
@@ -216,7 +228,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
             //TODO: AttackMelee Animation and Hitboxes
             PlayAttackSound();
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), Vector3.back, out hit, Range + 10))
+            if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), transform.forward, out hit, Range + 10))
             {
                 if (hit.collider.tag == "Player")
                 {
