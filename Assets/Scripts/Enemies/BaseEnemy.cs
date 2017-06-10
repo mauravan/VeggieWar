@@ -11,6 +11,9 @@ public class BaseEnemy : MonoBehaviour, IEnemy
     public int Damage=10;
     public float Range = 5.0f;
 
+    public float timeBetweenAttacks = 5f;
+    private float lastAttacked;
+
 
     //Userd for AI
     public Transform[] points;
@@ -53,16 +56,23 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     void Patrol()
     {
-        agent.stoppingDistance = 0f;
-        if (enemyInSight)
+        if (points.Length > 1)
+        {
+            agent.stoppingDistance = 0f;
+            if (enemyInSight)
+            {
+                state = EnemyStates.WalkingToPlayer;
+            }
+            else
+            {
+                if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                    GotoNextPoint();
+            }
+        } else
         {
             state = EnemyStates.WalkingToPlayer;
         }
-        else
-        {
-            if (!agent.pathPending && agent.remainingDistance < 0.5f)
-                GotoNextPoint();
-        }
+
     }
 
     void GotoNextPoint()
@@ -83,6 +93,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     // Update is called once per frame
     void Update () {
+        lastAttacked -= Time.deltaTime;
 
         switch (state)
         {
@@ -200,17 +211,19 @@ public class BaseEnemy : MonoBehaviour, IEnemy
 
     public void Attack()
     {
-        //TODO: AttackMelee Animation and Hitboxes
-		PlayAttackSound();
-        RaycastHit hit;
-        Debug.DrawRay(transform.position + new Vector3(0,1f,0), Vector3.back, Color.blue, 1000);
-        if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), Vector3.back, out hit, Range + 10))
+        if (lastAttacked <= 0)
         {
-            Debug.Log(hit.collider.tag);
-            if (hit.collider.tag == "Player")
+            //TODO: AttackMelee Animation and Hitboxes
+            PlayAttackSound();
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), Vector3.back, out hit, Range + 10))
             {
-                hit.transform.GetComponent<PlayerManager>().ApplyDamage(ReturnTotalDamage());
+                if (hit.collider.tag == "Player")
+                {
+                    hit.transform.GetComponent<PlayerManager>().ApplyDamage(ReturnTotalDamage());
+                }
             }
+            lastAttacked = timeBetweenAttacks;
         }
     }
 

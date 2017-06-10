@@ -73,8 +73,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
 
             GameObject weaponClone = Instantiate(weaponPerfab, weaponSpawn.position, weaponSpawn.rotation) as GameObject;
 
-            Debug.Log("Pre: " + weaponClone.transform.eulerAngles);
-
             //Shooting
             //TODO: Fix Rotation mess
             RaycastHit hit;
@@ -90,9 +88,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon {
                 weaponClone.transform.rotation = Quaternion.LookRotation(hit.point - weaponClone.transform.position) ;
 
                 weaponClone.transform.Rotate(new Vector3(90,0,0));
-
-                Debug.Log("Post: " + weaponClone.transform.eulerAngles);
-
 
                 float elapse_time = 0;
 
