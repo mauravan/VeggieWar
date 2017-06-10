@@ -12,6 +12,9 @@ public class PlayerManager : Singleton<PlayerManager> {
     public int Damage = 5;
     public int Range = 2;
 
+    public float TimeBetweenAttacks = 5f;
+    private float lastAttacked = 0f;
+
     public IWeapon CurrentWeapon { get; set; }
 
     public GameObject Crosshair;
@@ -91,13 +94,15 @@ public class PlayerManager : Singleton<PlayerManager> {
 
     public void AttackMelee()
     {
+        lastAttacked = TimeBetweenAttacks;
 		PlayAttackSound ();
         StartCoroutine(CurrentWeapon.Attack(false));
     }
 
     private void AttackRange()
     {
-		PlayThrowSound ();
+        lastAttacked = TimeBetweenAttacks;
+        PlayThrowSound ();
         StartCoroutine( CurrentWeapon.Attack(true) );
     }
 
@@ -131,33 +136,38 @@ public class PlayerManager : Singleton<PlayerManager> {
 	// Update is called once per frame
 	void Update () {
 
-        //TODO: Check if currently attacking
-        if (CurrentWeapon != null && CurrentWeapon.IsThrowable())
+        lastAttacked -= Time.deltaTime;
+
+        if (lastAttacked <= 0)
         {
-            if (CrossPlatformInputManager.GetButton("Fire2"))
+            //TODO: Check if currently attacking
+            if (CurrentWeapon != null && CurrentWeapon.IsThrowable())
             {
-                Crosshair.SetActive(true);
-                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                if (CrossPlatformInputManager.GetButton("Fire2"))
                 {
-                    AttackRange();
+                    Crosshair.SetActive(true);
+                    if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                    {
+                        AttackRange();
+                    }
                 }
+                else
+                {
+                    Crosshair.SetActive(false);
+                    if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                    {
+
+                        AttackMelee();
+                    }
+                }
+
             }
             else
             {
-                Crosshair.SetActive(false);
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))
                 {
-                    
                     AttackMelee();
                 }
-            }
-            
-        }
-        else
-        {
-            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-            {
-                AttackMelee();
             }
         }
 	}
