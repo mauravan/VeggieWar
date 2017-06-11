@@ -11,6 +11,14 @@ public class StateManager : Singleton<StateManager> {
 
     private States _momentaryState;
 
+    private int _level;
+
+    public int NumberOfEnemies;
+
+    private GameObject[] enemySpawns;
+
+    public bool LevelRunning;
+
 
     public States GetMomentaryState()
     {
@@ -63,12 +71,41 @@ public class StateManager : Singleton<StateManager> {
 	// Use this for initialization
 	void Start () {
         DontDestroyOnLoad(this); //Keep alive between scenes
+        _level = 0;
+        enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
+        LevelRunning = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (NumberOfEnemies == 0 && LevelRunning)
+        {
+            //Level Done
+            _level++;
+            LevelRunning = false;
+        }
        
     }
+
+
+    public void NextLevel()
+    {
+        int _numberOfEnemies = _level;
+
+        while(_numberOfEnemies > 0)
+        {
+            for (int i = 0; i < enemySpawns.Length; i++)
+            {
+                enemySpawns[i].GetComponent<EnemySpawner>().SpawnEnemy();
+                NumberOfEnemies++;
+            }
+            _numberOfEnemies--;
+        }
+        // NEW ROUND STARTED
+        LevelRunning = true;
+    }
+
+
 }
 
 

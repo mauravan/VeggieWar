@@ -29,12 +29,19 @@ public class SteamerControl : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        _isTriggerable = true;
+        if (other.tag == "Player")
+        {
+            _isTriggerable = true;
+        }
+       
     }
 
     void OnTriggerExit(Collider other)
     {
-        _isTriggerable = false;
+        if (other.tag == "Player")
+        {
+            _isTriggerable = false;
+        }
     }
 
     // Use this for initialization
