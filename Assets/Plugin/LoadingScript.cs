@@ -11,7 +11,8 @@ public class LoadingScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
+		loadingBar.fillAmount = 0;
 	}
 	
 	// Update is called once per frame
@@ -20,5 +21,8 @@ public class LoadingScript : MonoBehaviour {
 		if(loadingBar.fillAmount <=1){
 		loadingBar.fillAmount += 1.0f / loadingTime * Time.deltaTime;
 	}
+
+		if(loadingBar.fillAmount == 1.0f){
+			
 }
 }
