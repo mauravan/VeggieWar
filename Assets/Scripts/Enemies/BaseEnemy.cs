@@ -132,6 +132,7 @@ public class BaseEnemy : MonoBehaviour, IEnemy
         CheckIdleSound();
 	    if (HitPoints <= 0)
 	    {
+            StateManager.Instance.NumberOfEnemies--;
 	        Destroy(gameObject);
 	    }
 	}

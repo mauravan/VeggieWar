@@ -13,7 +13,6 @@ public class DangerZone : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.tag);
         if (other.tag == "Player")
         {
             _insideTrigger = true;
@@ -26,7 +25,6 @@ public class DangerZone : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log(other.tag);
         if (other.tag == "Player")
         {
             _insideTrigger = false;
@@ -55,7 +53,6 @@ public class DangerZone : MonoBehaviour
         for (int i = _enemiesInsideTrigger.Count - 1; i >= 0; i--)
         {
             var dead = _enemiesInsideTrigger[i].ApplyDamage(DamageToApplyPerFrame);
-            Debug.Log(_enemiesInsideTrigger[i].transform.GetComponent<BaseEnemy>().HitPoints);
             if (dead)
             {
                 _enemiesInsideTrigger.RemoveAt(i);

@@ -10,7 +10,14 @@ using UnityEngine.SceneManagement;
 public class StateManager : Singleton<StateManager> {
 
     private States _momentaryState;
+    private int _level;
+    public int NumberOfEnemies;
+    private GameObject[] enemySpawns;
+    public bool LevelRunning;
+	public UnityStandardAssets.ImageEffects.SepiaTone pauseEffect;
 
+    public AudioClip _winLevel;
+    AudioSource audioSource;
 
     public States GetMomentaryState()
     {
@@ -39,16 +46,16 @@ public class StateManager : Singleton<StateManager> {
                 }
                 else
                 {
-                    //TODO: Close the overlays
+					pauseEffect.enabled = false;
                     Time.timeScale = 1;
                 }
                 break;
             case States.PAUSE_MENU:
-                //TODO: Do an overlay
+				pauseEffect.enabled = true;
                 Time.timeScale = 0;
                 break;
             case States.TELEPORT_MENU:
-                //TODO: Open Overlay
+                pauseEffect.enabled = true;
                 Time.timeScale = 0;
                 break;
             case States.STORY2:
@@ -63,12 +70,53 @@ public class StateManager : Singleton<StateManager> {
 	// Use this for initialization
 	void Start () {
         DontDestroyOnLoad(this); //Keep alive between scenes
-	}
+        _level = 0;
+        enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
+        LevelRunning = false;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = AudioControl.soundVolume;
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        if (NumberOfEnemies == 0 && LevelRunning)
+        {
+
+            //Level Done
+            _level++;
+            LevelRunning = false;
+        }
        
     }
+
+    private void PlayWinSound()
+    {
+        if (_winLevel != null)
+        {
+            audioSource.clip = _winLevel;
+            audioSource.loop = false;
+            audioSource.Play();
+        }
+    }
+
+    public void NextLevel()
+    {
+        int _numberOfEnemies = _level;
+
+        while(_numberOfEnemies > 0)
+        {
+            for (int i = 0; i < enemySpawns.Length; i++)
+            {
+                enemySpawns[i].GetComponent<EnemySpawner>().SpawnEnemy();
+                NumberOfEnemies++;
+            }
+            _numberOfEnemies--;
+        }
+        // NEW ROUND STARTED
+        LevelRunning = true;
+    }
+
+
 }
 
 

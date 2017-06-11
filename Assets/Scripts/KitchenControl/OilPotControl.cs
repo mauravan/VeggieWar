@@ -51,7 +51,7 @@ public class OilPotControl : MonoBehaviour
             _isTriggered = false;
             ReturnDoorPosition();
         }
-        if (_isTriggerable && !_doorOpen && CrossPlatformInputManager.GetButtonDown("Action") && !secondTrigger.GetComponent<OilPotControl>()._doorOpen) // Player inside Trigger and pressed E
+        if (_isTriggerable && !_doorOpen && CrossPlatformInputManager.GetButtonDown("Action") && !secondTrigger.GetComponent<OilPotControl>()._doorOpen && !secondTrigger.GetComponent<OilPotControl>()._isTriggered) // Player inside Trigger and pressed E
         {
             //Open door
             _isTriggered = true;
