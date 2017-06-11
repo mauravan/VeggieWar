@@ -16,6 +16,9 @@ public class StateManager : Singleton<StateManager> {
     public bool LevelRunning;
 	public UnityStandardAssets.ImageEffects.SepiaTone pauseEffect;
 
+    public AudioClip _winLevel;
+    AudioSource audioSource;
+
     public States GetMomentaryState()
     {
         return _momentaryState;
@@ -43,7 +46,6 @@ public class StateManager : Singleton<StateManager> {
                 }
                 else
                 {
-                    //TODO: Close the overlays
 					pauseEffect.enabled = false;
                     Time.timeScale = 1;
                 }
@@ -53,7 +55,7 @@ public class StateManager : Singleton<StateManager> {
                 Time.timeScale = 0;
                 break;
             case States.TELEPORT_MENU:
-                //TODO: Open Overlay
+                pauseEffect.enabled = true;
                 Time.timeScale = 0;
                 break;
             case States.STORY2:
@@ -71,12 +73,15 @@ public class StateManager : Singleton<StateManager> {
         _level = 0;
         enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
         LevelRunning = false;
-	}
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = AudioControl.soundVolume;
+    }
 	
 	// Update is called once per frame
 	void Update () {
         if (NumberOfEnemies == 0 && LevelRunning)
         {
+
             //Level Done
             _level++;
             LevelRunning = false;
@@ -84,6 +89,15 @@ public class StateManager : Singleton<StateManager> {
        
     }
 
+    private void PlayWinSound()
+    {
+        if (_winLevel != null)
+        {
+            audioSource.clip = _winLevel;
+            audioSource.loop = false;
+            audioSource.Play();
+        }
+    }
 
     public void NextLevel()
     {

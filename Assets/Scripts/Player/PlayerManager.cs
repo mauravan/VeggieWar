@@ -33,7 +33,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 	// Attack Audio
 	public AudioClip soundThrow;
 	public AudioClip soundAttack;
-	private AudioSource audio;
+	private AudioSource audioSource;
 
 
     public int ReturnTotalRange()
@@ -88,6 +88,7 @@ public class PlayerManager : Singleton<PlayerManager> {
         {
             _hitbars[4].localScale = new Vector3(0, 0, 0);
             StateManager.Instance.SetMomentaryState(States.STORY2);
+            
         }
     }
 
@@ -173,15 +174,18 @@ public class PlayerManager : Singleton<PlayerManager> {
 	}
 		
 	private void InitSounds(){
-		audio = GetComponent<AudioSource>();
-		audio.volume = AudioControl.soundVolume  * 0.4f;
+		audioSource = GetComponent<AudioSource>();
+		audioSource.volume = AudioControl.soundVolume  * 0.4f;
 	}
 	private void PlayThrowSound(){
-		audio.clip = soundThrow;
-		audio.Play();
+		audioSource.clip = soundThrow;
+		audioSource.Play();
 	}
 	private void PlayAttackSound(){
-		audio.clip = soundAttack;
-		audio.Play();
+		audioSource.clip = soundAttack;
+		audioSource.Play();
 	}
+
+
+   
 }
