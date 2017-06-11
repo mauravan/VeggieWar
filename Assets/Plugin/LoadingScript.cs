@@ -14,15 +14,19 @@ public class LoadingScript : MonoBehaviour {
 
 		loadingBar.fillAmount = 0;
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-		if(loadingBar.fillAmount <=1){
-		loadingBar.fillAmount += 1.0f / loadingTime * Time.deltaTime;
-	}
+    // Update is called once per frame
+    void Update()
+    {
 
-		if(loadingBar.fillAmount == 1.0f){
-			
-}
+        if (loadingBar.fillAmount <= 1)
+        {
+            loadingBar.fillAmount += 1.0f / loadingTime * Time.deltaTime;
+        }
+
+        if (loadingBar.fillAmount == 1.0f)
+        {
+
+        }
+    } 
 }
