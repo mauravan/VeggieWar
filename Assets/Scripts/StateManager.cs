@@ -69,7 +69,7 @@ public class StateManager : Singleton<StateManager> {
 
 	// Use this for initialization
 	void Start () {
-        DontDestroyOnLoad(this); //Keep alive between scenes
+        //DontDestroyOnLoad(this); //Keep alive between scenes
         _level = 0;
         enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
         LevelRunning = false;
