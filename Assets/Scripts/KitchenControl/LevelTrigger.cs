@@ -40,6 +40,7 @@ public class LevelTrigger : MonoBehaviour {
 
         if (_isTriggerable && CrossPlatformInputManager.GetButtonDown("Action") ) // Player inside Trigger and pressed E
         {
+            Debug.Log("Inside and E");
             StateManager.Instance.NextLevel();
             infoBox.SetActive(false);
         }

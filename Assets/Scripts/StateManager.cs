@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.ImageEffects;
 
 
 /*
@@ -10,11 +11,13 @@ using UnityEngine.SceneManagement;
 public class StateManager : Singleton<StateManager> {
 
     private States _momentaryState;
-    private int _level;
+    public int Level;
     public int NumberOfEnemies;
     private GameObject[] enemySpawns;
     public bool LevelRunning;
 	public UnityStandardAssets.ImageEffects.SepiaTone pauseEffect;
+
+    private bool inKitchen;
 
     public AudioClip _winLevel;
     AudioSource audioSource;
@@ -33,7 +36,7 @@ public class StateManager : Singleton<StateManager> {
         switch (_momentaryState)
         {
             case States.MAIN_MENU:
-                SceneManager.LoadScene("MainMenu_VeggieWar");
+               
                 break;
             case States.STORY1:
                 SceneManager.LoadScene("Story1");
@@ -46,13 +49,19 @@ public class StateManager : Singleton<StateManager> {
                 }
                 else
                 {
-					pauseEffect.enabled = false;
-                    Time.timeScale = 1;
+                    if (inKitchen)
+                    {
+                        pauseEffect.enabled = false;
+                        Time.timeScale = 1;
+                    }
                 }
                 break;
             case States.PAUSE_MENU:
-				pauseEffect.enabled = true;
-                Time.timeScale = 0;
+                if (inKitchen)
+                {
+                    pauseEffect.enabled = true;
+                    Time.timeScale = 0;
+                }
                 break;
             case States.TELEPORT_MENU:
                 pauseEffect.enabled = true;
@@ -69,21 +78,43 @@ public class StateManager : Singleton<StateManager> {
 
 	// Use this for initialization
 	void Start () {
-        //DontDestroyOnLoad(this); //Keep alive between scenes
-        _level = 0;
-        enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
-        LevelRunning = false;
+        DontDestroyOnLoad(this); //Keep alive between scenes
+        
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = AudioControl.soundVolume;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void OnLevelWasLoaded(int level)
+    {
+        Debug.Log("onlevel: " + level);
+        if(level == 1)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Level = 1;
+        }
+        if (level == 2)
+        {
+            NumberOfEnemies = 0;
+            inKitchen = true;
+            Level = 1;
+            enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawn");
+            LevelRunning = false;
+            pauseEffect = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SepiaTone>();
+        } else
+        {
+            inKitchen = false;
+        }
+
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (NumberOfEnemies == 0 && LevelRunning)
         {
-
+            Debug.Log("Level Done");
             //Level Done
-            _level++;
+            Level++;
             LevelRunning = false;
         }
        
@@ -101,7 +132,8 @@ public class StateManager : Singleton<StateManager> {
 
     public void NextLevel()
     {
-        int _numberOfEnemies = _level;
+
+        int _numberOfEnemies = Level;
 
         while(_numberOfEnemies > 0)
         {

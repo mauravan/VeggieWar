@@ -52,6 +52,7 @@ namespace Fungus
 
         protected virtual void OnDisable()
         {
+            
             activeStages.Remove(this);
         }
 
